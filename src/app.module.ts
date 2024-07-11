@@ -8,6 +8,8 @@ import { UniversityController } from './controllers/api.controller';
 import { UniversityEntity } from './universities/university.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HttpModule } from '@nestjs/axios';
+import { UniversityRmqProvider } from './service/university.module';
+import { ClientsModule } from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -15,6 +17,7 @@ import { HttpModule } from '@nestjs/axios';
     TypeOrmConnectorModule,
     TypeOrmModule.forFeature([UniversityEntity]),
     HttpModule,
+    // ClientsModule.registerAsync([UniversityRmqProvider]),
   ],
   controllers: [AppController, UniversityController],
   providers: [AppService, UniversityService],

@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -9,7 +10,7 @@ import {
 import { IUniversity } from './university.interface';
 
 @Entity('university')
-export class UniversityEntity implements IUniversity {
+export class UniversityEntity extends BaseEntity implements IUniversity {
   @PrimaryColumn({ type: 'uuid', update: false, nullable: false })
   @Generated('uuid')
   id: string;
