@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
+import { TypeOrmConnectorModule } from './database/postgres.module';
+import { ConfigurationModule } from './configurations/config.module';
 
 @Module({
-  imports: [ConfigModule.forRoot()],
+  imports: [ConfigurationModule, TypeOrmConnectorModule],
   controllers: [AppController],
   providers: [AppService],
 })
