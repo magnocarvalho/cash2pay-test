@@ -1,0 +1,55 @@
+version: '3.8'
+services:
+  rabbitmq_cash:
+    container_name: rabbitmq_cash
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5671:5671"
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+      - RABBITMQ_DEFAULT_VHOST=${RABBITMQ_VHOST}
+    volumes:
+      - rabbit_data:/var/lib/rabbitmq
+    restart: always
+    networks:
+      - backend
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 100M
+  postgres_cash:
+    container_name: postgres_cash
+    restart: always
+    image: postgres
+    ports:
+      - "5446:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgres_cash:/var/lib/postgresql/data
+    networks:
+      - backend
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 100M
+
+volumes:
+  postgres_cash:
+    driver: local
+  rabbit_data:
+    driver: local
+
+networks:
+  backend:
+    driver: bridge
+  hostnet:
+    external: true
+    name: hostnet
