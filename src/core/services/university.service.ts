@@ -1,7 +1,7 @@
 import { University } from "@core/dtos/university.dto";
 import { IUniversity } from "@core/interfaces/university.interface";
 import { UniversityEntity } from "@infrastructure/database/entities/university.entity";
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, Logger } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -10,6 +10,7 @@ import { UniversityApiService } from "./university-api.service";
 
 @Injectable()
 export class UniversityService {
+  logger: Logger = new Logger(UniversityService.name);
   constructor(
     @InjectRepository(UniversityEntity)
     private readonly uniRepository: Repository<UniversityEntity>,
@@ -29,23 +30,21 @@ export class UniversityService {
     return this.clientWebhook.send("get_country_info", { country });
   }
 
-  putInQueue(payload: string[]) {
-    return this.clientWebhook.send("process_list", payload);
-  }
-
   async saveUniversity(payload: IUniversity) {
     const uni = this.uniRepository.create(payload);
-    return await uni.save();
+    await uni.save();
+    this.logger.log("SAVE_UNIVERSITY", payload);
+    return uni;
   }
 
   putQueueToSave(payload: IUniversity) {
-    return this.clientWebhook.send("save_university", payload);
+    return this.clientWebhook.emit("save_university", payload);
   }
 
   async getCountryUniversityInfo(country: string) {
     const result: University[] =
       await this.universityApiService.getUniversityInfo(country);
-
+    this.logger.log("GET_COUNTRY_UNIVERSITY_INFO", { country, result });
     result.forEach((uni) => {
       this.putQueueToSave(uni);
     });
