@@ -2,7 +2,7 @@
 
 ```
 docker compose up -d 
-``
+```
 ## Requisitos 
 
 Node.JS 16+ 
