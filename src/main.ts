@@ -1,5 +1,6 @@
 import { ConfigurationEnv } from "@infrastructure/configurations/config-environments";
 import { LoggerFactory } from "@infrastructure/logger/logger-factory";
+import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { Transport } from "@nestjs/microservices";
 
@@ -39,6 +40,8 @@ async function bootstrap() {
   });
 
   app.startAllMicroservices();
+
+  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(3000);
 }

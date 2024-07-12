@@ -12,7 +12,8 @@ export class UniversityApiService {
 
   async getUniversityInfo(country: string) {
     const { data, status } = await lastValueFrom(
-      this.httpAxios.get("http://universities.hipolabs.com/search", {
+      this.httpAxios.get("/search", {
+        baseURL: "http://universities.hipolabs.com",
         params: country,
       }),
     );

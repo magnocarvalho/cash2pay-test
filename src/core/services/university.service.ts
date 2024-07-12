@@ -27,13 +27,14 @@ export class UniversityService {
   }
 
   putQueueGetCountryUniversityInfo(country: string) {
+    this.logger.verbose("PUT_QUEUE_GET_COUNTRY_UNIVERSITY_INFO", { country });
     return this.clientWebhook.send("get_country_info", { country });
   }
 
   async saveUniversity(payload: IUniversity) {
     const uni = this.uniRepository.create(payload);
     await uni.save();
-    this.logger.log("SAVE_UNIVERSITY", payload);
+    this.logger.verbose("SAVE_UNIVERSITY_SUCCESS", uni);
     return uni;
   }
 
@@ -44,7 +45,7 @@ export class UniversityService {
   async getCountryUniversityInfo(country: string) {
     const result: University[] =
       await this.universityApiService.getUniversityInfo(country);
-    this.logger.log("GET_COUNTRY_UNIVERSITY_INFO", { country, result });
+    this.logger.verbose("GET_COUNTRY_UNIVERSITY_INFO", { country, result });
     result.forEach((uni) => {
       this.putQueueToSave(uni);
     });

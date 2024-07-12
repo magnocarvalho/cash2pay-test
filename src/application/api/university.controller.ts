@@ -1,4 +1,5 @@
 import { University } from "@core/dtos/university.dto";
+import { UniversityQueueDto } from "@core/dtos/university-queue.dto";
 import { Body, Controller, Logger, Post } from "@nestjs/common";
 import { EventPattern, MessagePattern, Payload } from "@nestjs/microservices";
 import { UniversityService } from "src/core/services/university.service";
@@ -9,10 +10,10 @@ export class UniversityController {
 
   constructor(private readonly universityService: UniversityService) {}
 
-  @Post("/start-list")
-  putQueue(@Body() body: { country: string[] }) {
+  @Post("/queue")
+  putQueue(@Body() body: UniversityQueueDto) {
     this.logger.log("[putQueue] - Received request", body);
-    this.universityService.handlerCountriesList(body.country);
+    return this.universityService.handlerCountriesList(body.countries);
   }
 
   @MessagePattern("get_country_info")
