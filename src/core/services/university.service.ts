@@ -1,3 +1,4 @@
+import { University } from "@core/dtos/university.dto";
 import { IUniversity } from "@core/interfaces/university.interface";
 import { UniversityEntity } from "@infrastructure/database/entities/university.entity";
 import { Inject, Injectable } from "@nestjs/common";
@@ -17,18 +18,38 @@ export class UniversityService {
     private readonly universityApiService: UniversityApiService,
   ) {}
 
+  handlerCountriesList(countries: string[]) {
+    countries.forEach((country) => {
+      this.putQueueGetCountryUniversityInfo(country);
+    });
+    return { message: "Countries list received" };
+  }
+
+  putQueueGetCountryUniversityInfo(country: string) {
+    return this.clientWebhook.send("get_country_info", { country });
+  }
+
   putInQueue(payload: string[]) {
     return this.clientWebhook.send("process_list", payload);
   }
 
   async saveUniversity(payload: IUniversity) {
     const uni = this.uniRepository.create(payload);
-    await uni.save();
+    return await uni.save();
   }
 
   putQueueToSave(payload: IUniversity) {
     return this.clientWebhook.send("save_university", payload);
   }
 
-  putQueueToGetUniversityInfo(payload: IUniversity[]) {}
+  async getCountryUniversityInfo(country: string) {
+    const result: University[] =
+      await this.universityApiService.getUniversityInfo(country);
+
+    result.forEach((uni) => {
+      this.putQueueToSave(uni);
+    });
+
+    return result;
+  }
 }
