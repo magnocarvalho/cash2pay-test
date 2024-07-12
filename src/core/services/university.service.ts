@@ -1,10 +1,10 @@
-import { HttpService } from '@nestjs/axios';
-import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { InjectRepository } from '@nestjs/typeorm';
-import { UniversityEntity } from 'src/universities/university.entity';
-import { IUniversity } from 'src/universities/university.interface';
-import { Repository } from 'typeorm';
+import { UniversityEntity } from "@infrastructure/database/entities/university.entity";
+import { HttpService } from "@nestjs/axios";
+import { Inject, Injectable } from "@nestjs/common";
+import { ClientProxy } from "@nestjs/microservices";
+import { InjectRepository } from "@nestjs/typeorm";
+
+import { Repository } from "typeorm";
 
 @Injectable()
 export class UniversityService {
@@ -12,8 +12,8 @@ export class UniversityService {
     @InjectRepository(UniversityEntity)
     private readonly uniRepository: Repository<UniversityEntity>,
     private readonly httpAxios: HttpService,
-    // @Inject('UNIVERSITY')
-    // private readonly clientWebhook: ClientProxy,
+    @Inject("UNIVERSITY")
+    private readonly clientWebhook: ClientProxy,
   ) {}
 
   getAllUniversities() {
@@ -37,13 +37,13 @@ export class UniversityService {
   getInfoCountry(country: string) {
     // http://universities.hipolabs.com/search?country=brazil
     return this.httpAxios
-      .get('http://universities.hipolabs.com/search', {
+      .get("http://universities.hipolabs.com/search", {
         params: country,
       })
       .toPromise();
   }
 
   putInQueue(payload: string[]) {
-    // return this.clientWebhook.send('process_list', payload).toPromise();
+    return this.clientWebhook.send("process_list", payload).toPromise();
   }
 }

@@ -1,6 +1,6 @@
 import { ClientsProviderAsyncOptions, Transport } from '@nestjs/microservices';
-import { ConfigurationEnv } from '../configurations/config-env';
-import { ConfigurationModule } from '../configurations/config.module';
+import { ConfigurationEnv } from '../../infrastructure/configurations/config-enviroments';
+import { ConfigurationModule } from '../../infrastructure/configurations/config.module';
 
 export const UniversityRmqProvider: ClientsProviderAsyncOptions = {
   name: 'UNIVERSITY',

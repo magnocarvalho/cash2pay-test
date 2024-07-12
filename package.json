@@ -32,13 +32,15 @@
     "axios": "^1.7.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
-    "gts": "^5.3.1",
     "nest-winston": "^1.9.7",
     "pg": "^8.8.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "typeorm": "^0.3.20",
     "winston": "^3.13.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -50,9 +52,15 @@
     "@types/supertest": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
-    "eslint": "^8.42.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.0",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-standard": "17.0.0",
+    "eslint-plugin-deprecation": "^1.4.1",
+    "eslint-plugin-import": "^2.28.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "4.2.1",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "gts": "^3.1.1",
     "jest": "^29.5.0",
     "prettier": "^3.0.0",
     "source-map-support": "^0.5.21",
@@ -79,5 +87,72 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "prettier": {
+    "filepath": "./node_modules/gts/.prettierrc.json",
+    "singleQuote": false
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "project": "tsconfig.json",
+      "sourceType": "module",
+      "warnOnUnsupportedTypeScriptVersion": false
+    },
+    "extends": [
+      "./node_modules/gts/",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:prettier/recommended"
+    ],
+    "env": {
+      "node": true,
+      "jest": true
+    },
+    "plugins": [
+      "simple-import-sort",
+      "@typescript-eslint",
+      "prettier",
+      "deprecation"
+    ],
+    "rules": {
+      "node/no-unpublished-import": 0,
+      "node/no-extraneous-import": 0,
+      "node/no-extraneous-require": 0,
+      "simple-import-sort/exports": "error",
+      "simple-import-sort/imports": 1,
+      "no-process-exit": 0,
+      "no-console": 1,
+      "max-classes-per-file": [
+        "error",
+        1
+      ],
+      "prettier/prettier": [
+        "error",
+        {
+          "endOfLine": "auto"
+        }
+      ],
+      "@typescript-eslint/indent": 0,
+      "@typescript-eslint/member-delimiter-style": 0,
+      "@typescript-eslint/no-unsafe-member-access": 0,
+      "@typescript-eslint/no-unsafe-call": 0,
+      "@typescript-eslint/no-unsafe-assignment": 0,
+      "@typescript-eslint/explicit-module-boundary-types": 0,
+      "@typescript-eslint/no-explicit-any": 0,
+      "@typescript-eslint/no-var-requires": 0,
+      "@typescript-eslint/no-use-before-define": 0,
+      "@typescript-eslint/no-unused-vars": "warn",
+      "deprecation/deprecation": "warn"
+    },
+    "ignorePatterns": [
+      "node_modules/",
+      "coverage*/",
+      "docs/",
+      "dist/",
+      "bin/",
+      "test/",
+      "commitlint.config.js"
+    ]
   }
 }
