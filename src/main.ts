@@ -7,10 +7,18 @@ import { AppModule } from "./app.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: LoggerFactory("Cash2Pay"),
+    bufferLogs: true,
   });
 
   const configuration = app.get(ConfigurationEnv);
+
+  app.useLogger(
+    LoggerFactory(
+      "Cash2Pay",
+      configuration.logger.json,
+      configuration.logger.level,
+    ),
+  );
 
   app.connectMicroservice({
     transport: Transport.RMQ,

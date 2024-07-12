@@ -29,4 +29,9 @@ export class ConfigurationEnv {
       Boolean(this.configService.get<string>("POSTGRES_SSL") === "true") ||
       false,
   };
+
+  logger = {
+    json: this.configService.get<string>("USE_JSON_LOGGER") === "true",
+    level: this.configService.get<string>("LEVEL_LOGGER"),
+  };
 }
