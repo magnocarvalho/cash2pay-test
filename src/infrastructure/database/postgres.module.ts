@@ -1,8 +1,7 @@
+import { UniversityEntity } from '@infrastructure/entity/universities/university.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigurationEnv } from '../configurations/config-env';
-import { ConfigurationModule } from '../configurations/config.module';
-import { UniversityEntity } from 'src/universities/university.entity';
+
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({

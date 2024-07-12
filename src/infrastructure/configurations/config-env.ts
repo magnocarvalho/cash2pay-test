@@ -5,6 +5,8 @@ import { ConfigService } from '@nestjs/config';
 export class ConfigurationEnv {
   constructor(private configService: ConfigService) {}
 
+  port: number = this.configService.get<number>('API_PORT') || 3000;
+
   rabbitmq = {
     user: this.configService.get<string>('RABBITMQ_USER'),
     password: this.configService.get<string>('RABBITMQ_PASSWORD'),

@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { UniversityService } from 'src/service/university.service';
+import { UniversityService } from 'src/core/services/university.service';
 
-@Controller()
+@Controller('/universities')
 export class UniversityController {
   constructor(private readonly universityService: UniversityService) {}
 
@@ -11,20 +11,6 @@ export class UniversityController {
     return this.universityService.getAllUniversities();
   }
 
-  /**
-   * 
-   * @param payload [
-   "argentina",
-   "brasil",
-   "chile",
-   "colombia",
-   "paraguai",
-   "peru",
-   "suriname",
-   "uruguay"
-]
-
-   */
   @MessagePattern('process_list')
   startProcessList(@Payload() payload: string[]) {
     this.universityService.createWithList(payload);
