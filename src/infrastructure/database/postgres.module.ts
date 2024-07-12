@@ -1,7 +1,8 @@
-import { ConfigurationEnv } from "@infrastructure/configurations/config-enviroments";
 import { ConfigurationModule } from "@infrastructure/configurations/config.module";
+import { ConfigurationEnv } from "@infrastructure/configurations/config-environments";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
+
 import { UniversityEntity } from "./entities/university.entity";
 
 @Module({

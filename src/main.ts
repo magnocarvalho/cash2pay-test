@@ -1,17 +1,18 @@
+import { ConfigurationEnv } from "@infrastructure/configurations/config-environments";
+import { LoggerFactory } from "@infrastructure/logger/logger-factory";
 import { NestFactory } from "@nestjs/core";
 import { Transport } from "@nestjs/microservices";
+
 import { AppModule } from "./app.module";
-import { ConfigurationEnv } from "@infrastructure/configurations/config-enviroments";
-import { LoggerFactory } from "@infrastructure/logger/logger-factory";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: LoggerFactory("Cahs2Pay"),
+    logger: LoggerFactory("Cash2Pay"),
   });
 
   const configuration = app.get(ConfigurationEnv);
 
-  await app.connectMicroservice({
+  app.connectMicroservice({
     transport: Transport.RMQ,
     options: {
       urls: [

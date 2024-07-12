@@ -1,4 +1,4 @@
-import { IsArray, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsOptional, IsString } from "class-validator";
 
 export class University {
   @IsString()
@@ -16,5 +16,5 @@ export class University {
   country?: string;
   @IsOptional()
   @IsString()
-  'state-province'?: string;
+  "state-province"?: string;
 }

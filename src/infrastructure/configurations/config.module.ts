@@ -1,7 +1,8 @@
 import { Module } from "@nestjs/common";
-import { ConfigurationEnv } from "./config-enviroments";
 import { ConfigModule } from "@nestjs/config";
 import { WinstonModule } from "nest-winston";
+
+import { ConfigurationEnv } from "./config-environments";
 
 @Module({
   imports: [
