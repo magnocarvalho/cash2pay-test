@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "CASH teste Launch via NPM yarn start:debug",
+            "name": "CASH2PAY teste Launch via NPM yarn start:debug",
             "request": "launch",
             "runtimeArgs": [
                 "start:debug"

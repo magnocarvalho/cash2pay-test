@@ -2,7 +2,7 @@
 
 ```
 docker compose up -d 
-``
+```
 ## Requisitos 
 
 Node.JS 16+ 
@@ -25,11 +25,21 @@ yarn build
 Rodar codigo localhost 
 
 ```
-yarn start:dev
+yarn start
 ```
 
 
 
+# Iniciar processo 
 
+```
+curl --location 'http://localhost:3000/universities/queue' \
+--header 'Content-Type: application/json' \
+--data '{
+    "countries": [
+        "brazil"
+    ]
+}'
+```
 
 

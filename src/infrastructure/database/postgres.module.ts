@@ -1,19 +1,21 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigurationEnv } from '../configurations/config-env';
-import { ConfigurationModule } from '../configurations/config.module';
-import { UniversityEntity } from 'src/universities/university.entity';
+import { ConfigurationModule } from "@infrastructure/configurations/config.module";
+import { ConfigurationEnv } from "@infrastructure/configurations/config-environments";
+import { Module } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
+
+import { UniversityEntity } from "./entities/university.entity";
+
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
       imports: [ConfigurationModule],
       useFactory: (env: ConfigurationEnv) => ({
-        type: 'postgres',
+        type: "postgres",
         entities: [UniversityEntity],
         synchronize: env.database.synchronize,
         autoLoadEntities: true,
-        logger: 'advanced-console',
-        logging: ['error', 'warn'],
+        logger: "advanced-console",
+        logging: ["error", "warn"],
         dropSchema: false,
         ssl: env.database.ssl,
         username: env.database.username,

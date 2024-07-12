@@ -20,7 +20,7 @@ services:
       resources:
         limits:
           cpus: "0.50"
-          memory: 100M
+          memory: 200M
   postgres_cash:
     container_name: postgres_cash
     restart: always
@@ -28,9 +28,9 @@ services:
     ports:
       - "5446:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+      - POSTGRES_USER=${POSTGRES_USER}	
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DATABASE}
     volumes:
       - postgres_cash:/var/lib/postgresql/data
     networks:

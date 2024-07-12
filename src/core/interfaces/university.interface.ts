@@ -7,5 +7,5 @@ export interface IUniversity {
   web_pages?: string[];
   domains?: string[];
   country?: string;
-  'state-province'?: string;
+  "state-province"?: string;
 }

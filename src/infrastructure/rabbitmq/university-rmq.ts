@@ -1,9 +1,10 @@
-import { ClientsProviderAsyncOptions, Transport } from '@nestjs/microservices';
-import { ConfigurationEnv } from '../configurations/config-env';
-import { ConfigurationModule } from '../configurations/config.module';
+import { ClientsProviderAsyncOptions, Transport } from "@nestjs/microservices";
+
+import { ConfigurationModule } from "../configurations/config.module";
+import { ConfigurationEnv } from "../configurations/config-environments";
 
 export const UniversityRmqProvider: ClientsProviderAsyncOptions = {
-  name: 'UNIVERSITY',
+  name: "UNIVERSITY",
   imports: [ConfigurationModule],
   inject: [ConfigurationEnv],
   useFactory: async (envConfig: ConfigurationEnv) => ({
@@ -17,9 +18,15 @@ export const UniversityRmqProvider: ClientsProviderAsyncOptions = {
           username: envConfig.rabbitmq.user,
           protocol: envConfig.rabbitmq.protocol,
           vhost: envConfig.rabbitmq.vhost,
+          heartbeat: 1,
         },
       ],
       queue: envConfig.rabbitmq.queue,
+      noAck: true,
+      persistent: true,
+      queueOptions: {
+        durable: true,
+      },
     },
   }),
 };
