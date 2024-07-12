@@ -1,5 +1,6 @@
 import { UniversityController } from "@application/api/university.controller";
 import { UniversityService } from "@core/services/university.service";
+import { UniversityApiService } from "@core/services/university-api.service";
 import { ConfigurationModule } from "@infrastructure/configurations/config.module";
 import { UniversityEntity } from "@infrastructure/database/entities/university.entity";
 import { UniversityRmqProvider } from "@infrastructure/rabbitmq/university-rmq";
@@ -16,6 +17,6 @@ import { TypeOrmModule } from "@nestjs/typeorm";
     ClientsModule.registerAsync([UniversityRmqProvider]),
   ],
   controllers: [UniversityController],
-  providers: [UniversityService],
+  providers: [UniversityService, UniversityApiService],
 })
 export class UniversityModule {}
