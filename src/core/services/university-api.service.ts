@@ -11,23 +11,30 @@ export class UniversityApiService {
   constructor(private readonly httpAxios: HttpService) {}
 
   async getUniversityInfo(country: string) {
-    const { data, status } = await lastValueFrom(
-      this.httpAxios.get("/search", {
-        baseURL: "http://universities.hipolabs.com",
-        params: country,
-      }),
-    );
+    try {
+      const { data, status } = await lastValueFrom(
+        this.httpAxios.get("/search", {
+          baseURL: "http://universities.hipolabs.com",
+          params: { country },
+          responseType: "json",
+          responseEncoding: "utf8",
+        }),
+      );
 
-    if (status > 400) {
-      this.logger.error("GET_UNIVERSITY_INFO_ERROR", { data, status });
+      if (status > 400) {
+        this.logger.error("GET_UNIVERSITY_INFO_ERROR", { data, status });
+        throw new RpcException("GET_UNIVERSITY_INFO_ERROR");
+      }
+
+      this.logger.log("GET_UNIVERSITY_INFO_SUCCESS", { data, status });
+
+      const universities = this.mapUniversityData(data);
+
+      return universities;
+    } catch (error) {
+      this.logger.error("GET_UNIVERSITY_INFO_ERROR", error);
       throw new RpcException("GET_UNIVERSITY_INFO_ERROR");
     }
-
-    this.logger.log("GET_UNIVERSITY_INFO_SUCCESS", { data, status });
-
-    const universities = this.mapUniversityData(data);
-
-    return universities;
   }
 
   private mapUniversityData(data: any): University[] {

@@ -18,9 +18,15 @@ export const UniversityRmqProvider: ClientsProviderAsyncOptions = {
           username: envConfig.rabbitmq.user,
           protocol: envConfig.rabbitmq.protocol,
           vhost: envConfig.rabbitmq.vhost,
+          heartbeat: 1,
         },
       ],
       queue: envConfig.rabbitmq.queue,
+      noAck: true,
+      persistent: true,
+      queueOptions: {
+        durable: true,
+      },
     },
   }),
 };

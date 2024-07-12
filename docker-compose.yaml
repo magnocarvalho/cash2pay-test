@@ -20,7 +20,7 @@ services:
       resources:
         limits:
           cpus: "0.50"
-          memory: 100M
+          memory: 200M
   postgres_cash:
     container_name: postgres_cash
     restart: always

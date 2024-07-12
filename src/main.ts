@@ -1,4 +1,5 @@
 import { ConfigurationEnv } from "@infrastructure/configurations/config-environments";
+import { AllExceptionsRpcFilter } from "@infrastructure/filters/rpc-exception.filter";
 import { LoggerFactory } from "@infrastructure/logger/logger-factory";
 import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
@@ -13,13 +14,12 @@ async function bootstrap() {
 
   const configuration = app.get(ConfigurationEnv);
 
-  app.useLogger(
-    LoggerFactory(
-      "Cash2Pay",
-      configuration.logger.json,
-      configuration.logger.level,
-    ),
+  const logger = LoggerFactory(
+    "Cash2Pay",
+    configuration.logger.json,
+    configuration.logger.level,
   );
+  app.useLogger(logger);
 
   app.connectMicroservice({
     transport: Transport.RMQ,
@@ -36,6 +36,11 @@ async function bootstrap() {
         },
       ],
       queue: configuration.rabbitmq.queue,
+      noAck: true,
+      persistent: true,
+      queueOptions: {
+        durable: true,
+      },
     },
   });
 
@@ -43,6 +48,10 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
-  await app.listen(3000);
+  app.useGlobalFilters(new AllExceptionsRpcFilter());
+
+  await app.listen(3000).then(() => {
+    logger.verbose("Cash2Pay is running on port 3000");
+  });
 }
 bootstrap();

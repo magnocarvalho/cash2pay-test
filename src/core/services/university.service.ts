@@ -2,8 +2,9 @@ import { University } from "@core/dtos/university.dto";
 import { IUniversity } from "@core/interfaces/university.interface";
 import { UniversityEntity } from "@infrastructure/database/entities/university.entity";
 import { Inject, Injectable, Logger } from "@nestjs/common";
-import { ClientProxy } from "@nestjs/microservices";
+import { ClientProxy, RpcException } from "@nestjs/microservices";
 import { InjectRepository } from "@nestjs/typeorm";
+import { catchError, lastValueFrom } from "rxjs";
 import { Repository } from "typeorm";
 
 import { UniversityApiService } from "./university-api.service";
@@ -28,10 +29,35 @@ export class UniversityService {
 
   putQueueGetCountryUniversityInfo(country: string) {
     this.logger.verbose("PUT_QUEUE_GET_COUNTRY_UNIVERSITY_INFO", { country });
-    return this.clientWebhook.send("get_country_info", { country });
+    return lastValueFrom(
+      this.clientWebhook.send("get_country_info", { country }).pipe(
+        catchError((exception) => {
+          this.logger.error("[ERROR]PUT_QUEUE_GET_COUNTRY_UNIVERSITY_INFO", {
+            error: exception,
+            country,
+          });
+
+          throw new RpcException(exception);
+        }),
+      ),
+    );
   }
 
   async saveUniversity(payload: IUniversity) {
+    const findUni = await this.uniRepository.findOne({
+      where: {
+        name: payload.name,
+        country: payload.country,
+        alpha_two_code: payload.alpha_two_code,
+        "state-province": payload["state-province"],
+      },
+    });
+
+    if (findUni) {
+      this.logger.verbose("UNIVERSITY_ALREADY_EXISTS", findUni);
+      return findUni;
+    }
+
     const uni = this.uniRepository.create(payload);
     await uni.save();
     this.logger.verbose("SAVE_UNIVERSITY_SUCCESS", uni);
