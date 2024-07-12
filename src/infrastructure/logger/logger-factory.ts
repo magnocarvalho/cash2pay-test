@@ -12,15 +12,13 @@ export const LoggerFactory = (
   let consoleFormat;
 
   if (useJson) {
-    consoleFormat = format.combine(
-      format.ms(),
-      format.timestamp(),
-      format.json(),
-    );
+    consoleFormat = format.combine(format.timestamp(), format.json());
   } else {
     consoleFormat = format.combine(
+      format.metadata(),
       format.timestamp(),
-      format.ms(),
+      format.align(),
+      format.prettyPrint(),
       nestWinstonModuleUtilities.format.nestLike(appName, {
         colors: true,
         prettyPrint: true,
@@ -31,5 +29,6 @@ export const LoggerFactory = (
   return WinstonModule.createLogger({
     level: loggerLevel,
     transports: [new transports.Console({ format: consoleFormat })],
+    defaultMeta: { service: appName, version: process.env.npm_package_version },
   });
 };

@@ -1,8 +1,8 @@
 {
   "name": "cash-2-pay",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "version": "0.0.2",
+  "description": "Aplicação para teste de integração com RabbitMQ parte do teste de vaga para a Cash2Pay",
+  "author": "magnocarvalho",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
