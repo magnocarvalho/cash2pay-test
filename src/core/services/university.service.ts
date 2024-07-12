@@ -1,3 +1,4 @@
+import { IUniversity } from "@core/interfaces/university.interface";
 import { UniversityEntity } from "@infrastructure/database/entities/university.entity";
 import { HttpService } from "@nestjs/axios";
 import { Inject, Injectable } from "@nestjs/common";

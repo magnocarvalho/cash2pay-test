@@ -2,9 +2,12 @@ import { NestFactory } from "@nestjs/core";
 import { Transport } from "@nestjs/microservices";
 import { AppModule } from "./app.module";
 import { ConfigurationEnv } from "@infrastructure/configurations/config-enviroments";
+import { LoggerFactory } from "@infrastructure/logger/logger-factory";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: LoggerFactory("Cahs2Pay"),
+  });
 
   const configuration = app.get(ConfigurationEnv);
 
